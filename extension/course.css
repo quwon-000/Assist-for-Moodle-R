@@ -1,0 +1,248 @@
+/* コースページのシラバスボタン（course-syllabus.js が追加） */
+.mx-course-syllabus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .25rem 0 .75rem;
+}
+
+.mx-course-syllabus-btn {
+  display: inline-block;
+  padding: .3rem .9rem;
+  border: 1px solid #ac413d;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #ac413d;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mx-course-syllabus-btn:hover,
+.mx-course-syllabus-btn:focus {
+  background-color: #ac413d;
+  color: #fff;
+  text-decoration: none;
+}
+
+/*
+ * コースページの2列グリッド
+ * レイアウト切り替え（layout-toggle.js）で「ワイド」が選ばれているとき（html[data-mx-course="grid"]）、
+ * かつ画面幅 1200px 以上・編集モード以外のときだけ適用する。
+ */
+@media (min-width: 1200px) {
+  /* ---- 幅制限 (830px) の解除 ---- */
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) #page.drawers .main-inner,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) #page.drawers .footer-popover,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .header-maxwidth,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .secondary-navigation .navigation .nav-tabs {
+    max-width: none;
+  }
+
+  /* ---- セクション（第1回、第2回…）を2列のカードで並べる ---- */
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.topics,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.weeks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+  }
+
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.topics > li.section,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.weeks > li.section {
+    min-width: 0;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid #dee2e6 !important;
+    border-radius: .5rem;
+    background-color: #fff;
+  }
+
+  /* セクション0（全体のお知らせなど）は2列ぶち抜き */
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.topics > li.section:first-child,
+  html[data-mx-course="grid"] body.path-course-view:not(.editing) .course-content ul.weeks > li.section:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---- 教材の一括ダウンロード（materials-download.js） ---- */
+button.mx-course-syllabus-btn {
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.mx-dl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgb(0 0 0 / .4);
+}
+
+.mx-dl-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: 85vh;
+  padding: 1.25rem 1.5rem;
+  border-radius: .5rem;
+  background-color: #fff;
+  color: #1d2125;
+  box-shadow: 0 8px 24px rgb(0 0 0 / .2);
+}
+
+.mx-dl-title {
+  margin: 0 0 .25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mx-dl-dest {
+  margin: 0 0 .75rem;
+  color: #6a737b;
+  font-size: .8rem;
+  word-break: break-all;
+}
+
+.mx-dl-tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid #dee2e6;
+  font-size: .85rem;
+}
+
+.mx-dl-count {
+  margin-left: auto;
+  color: #6a737b;
+}
+
+.mx-dl-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: .25rem 0;
+}
+
+.mx-dl-section {
+  margin: .75rem 0 .25rem;
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.mx-dl-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  padding: .3rem .25rem;
+  border-radius: 4px;
+  font-size: .9rem;
+  cursor: pointer;
+}
+
+.mx-dl-item:hover {
+  background-color: #f5f5f5;
+}
+
+.mx-dl-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.mx-dl-kind {
+  flex-shrink: 0;
+  color: #6a737b;
+  font-size: .75rem;
+}
+
+.mx-dl-status {
+  margin: .5rem 0 0;
+  font-size: .85rem;
+}
+
+.mx-dl-status:empty {
+  display: none;
+}
+
+.mx-dl-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.mx-dl-primary,
+.mx-dl-secondary {
+  padding: .35rem 1rem;
+  border: 1px solid #ac413d;
+  border-radius: 4px;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mx-dl-primary {
+  background-color: #ac413d;
+  color: #fff;
+}
+
+.mx-dl-secondary {
+  background-color: #fff;
+  color: #ac413d;
+}
+
+.mx-dl-primary:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.mx-dl-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ac413d;
+  font-size: .85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mx-dl-link:disabled {
+  color: #6a737b;
+  cursor: default;
+}
+
+.mx-dl-hint {
+  margin: .25rem 0 0;
+  color: #6a737b;
+  font-size: .8rem;
+}
+
+/* 「ダウンロードを中止」はボタン並びの左端に置く */
+.mx-dl-actions .mx-dl-link {
+  margin-right: auto;
+}
+
+/* ---- 「私の先生にメッセージ」の先生ボタン（course-teachers.js） ---- */
+.mx-course-teachers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin: -.25rem 0 .75rem;
+}
+
+.mx-course-teachers-label {
+  color: #6a737b;
+  font-size: .85rem;
+}
+
+.mx-course-teacher-btn {
+  padding: .2rem .75rem;
+  font-size: .85rem;
+}

@@ -1,0 +1,45 @@
+# v0.11.0 のようなタグを push すると、extension/ の中身だけを zip にまとめて GitHub の Releases に置く。
+# 利用者は Releases から zip を1つダウンロードして展開し、そのフォルダを読み込むだけで使える。
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: タグと manifest の内容を確認する
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(jq -r .version extension/manifest.json)"
+          homepage="$(jq -r '.homepage_url // ""' extension/manifest.json)"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::タグ（v$tag）と manifest.json の version（$version）が一致しません。"
+            exit 1
+          fi
+          if echo "$homepage" | grep -q "YOUR-GITHUB-NAME"; then
+            echo "::error::manifest.json の homepage_url が仮の値のままです。リポジトリの URL に書き換えてください。"
+            exit 1
+          fi
+
+      - name: extension/ の中身を zip にまとめる
+        run: |
+          name="assist-for-moodle-r-${GITHUB_REF_NAME}.zip"
+          (cd extension && zip -r -X "../$name" . -x "*.DS_Store" "Thumbs.db")
+          echo "ZIP_NAME=$name" >> "$GITHUB_ENV"
+
+      - name: Release を作成して zip を添付する
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$ZIP_NAME" \
+            --title "Assist for moodle+R $GITHUB_REF_NAME" \
+            --notes "下の Assets から **$ZIP_NAME** をダウンロードし、展開したフォルダを Chrome / Edge で読み込んでください。手順は README の「インストール」を参照してください。"

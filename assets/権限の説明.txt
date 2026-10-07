@@ -1,0 +1,50 @@
+■ downloads の権限を要求する理由
+
+【日本語】
+利用者が立命館大学の LMS「moodle+R」のコースページで選んだ授業教材（PDF などのファイル）を、まとめて保存する機能のために使います。chrome.downloads.download で教材を1件ずつ保存し、onDeterminingFilename で保存先を「科目名/授業回/」のフォルダに振り分けます（この拡張機能が始めたダウンロードだけが対象で、ほかのダウンロードには関与しません）。onChanged と search で保存の完了を確認し、ログインが切れていた場合などに教材ではなく Moodle の画面（HTML）が保存されたときは、removeFile と erase でそのファイルを削除して失敗として利用者に知らせます。保存するのは利用者がチェックを付けた moodle+R 上の教材だけで、自動的に保存したり、ほかのサイトからダウンロードしたりすることはありません。
+
+【English】
+Used for the bulk download feature: the user selects course materials (e.g. PDF files) on a course page of moodle+R, Ritsumeikan University's LMS, and saves them at once. chrome.downloads.download saves the selected files one by one, and onDeterminingFilename places them into "course name/session/" folders. Only downloads started by this extension are affected; all other downloads are left untouched. onChanged and search are used to confirm each download finished, and if a Moodle page (HTML) was saved instead of the file (e.g. the login session expired), removeFile and erase delete it and the user is told it failed. Only files the user explicitly selected on moodle+R are downloaded; nothing is downloaded automatically or from other sites.
+
+
+■ storage の権限を要求する理由
+
+【日本語】
+利用者の設定と、機能を速く動かすための情報を、利用者のブラウザ内（chrome.storage.local）に保存するために使います。保存するのは次の3つだけです。(1) 一度開いた授業のシラバスの URL（次回から検索せずにすぐ開くため）、(2) 時間割に表示される授業と授業コードの対応（コースページにシラバスボタンを表示するため）、(3) 利用者が選んだ表示の設定（「標準」か「ワイド」か）。これらの情報を外部に送信することはなく、氏名・成績・教材の内容などの個人情報は保存しません。
+
+【English】
+Used to keep the user's settings and cached data locally in the browser (chrome.storage.local). Only three things are stored: (1) the URLs of syllabus pages the user has opened, so they open instantly next time without searching; (2) the mapping between courses and course codes shown in the user's timetable, used to show the syllabus button on course pages; (3) the user's layout choice ("standard" or "wide"). This data is never sent anywhere, and no personal information such as names, grades or material contents is stored.
+
+
+■ ホストに対して権限を要求する理由
+
+【日本語】
+この拡張機能は、次の2つのサイトだけで動作します。ほかのサイトでは一切動作しません。
+
+1. https://lms.ritsumei.ac.jp/*（立命館大学の LMS「moodle+R」）
+画面を PC 向けに見やすくするため、CSS とスクリプトをページに追加します。ダッシュボードとコースページのワイド表示・2列表示、シラバスボタンと「私の先生にメッセージ」の表示、リンク集への CAMPUS WEB の追加、外から開いたときに Home を飛ばしてダッシュボードを開く機能です。教材の一括ダウンロードでは、利用者が開いたコースページと、その中の回・フォルダ・ページを同じサイト内で読み込み、教材のリンクを集めます。
+
+2. https://syllabus.ritsumei.ac.jp/syllabus/s/*（立命館大学のオンラインシラバス）
+「シラバス」ボタンから開いたとき、シラバスサイト自身の検索機能でその授業を探し、該当するシラバスのページへ移動します。検索の途中の画面は「シラバスを開いています…」の表示で隠します。
+
+どちらのサイトでも、読み取った内容を外部に送信することはありません。また、外部からコードを読み込んで実行することもありません。
+
+【English】
+The extension runs only on the following two sites and nowhere else.
+
+1. https://lms.ritsumei.ac.jp/* (moodle+R, Ritsumeikan University's LMS)
+Adds CSS and scripts for PC use: wide and two-column layouts for the dashboard and course pages, syllabus and "Message my teacher" buttons on course pages, a CAMPUS WEB link in the links menu, and skipping the home page when the site is opened from outside. For bulk download, it reads the course page the user opened and the session, folder and page pages of that course on the same site to collect material links.
+
+2. https://syllabus.ritsumei.ac.jp/syllabus/s/* (Ritsumeikan University's online syllabus)
+When opened from the syllabus button, it finds the course with the site's own search function and moves to its syllabus page.
+
+On both sites, nothing that is read is sent to any external server, and no remotely hosted code is loaded or executed.
+
+
+■ 単一用途
+
+【日本語】
+立命館大学の学習管理システム「moodle+R」（lms.ritsumei.ac.jp）を、学生がパソコンで使いやすくすることです。すべての機能は moodle+R の画面上で、授業の情報や教材にたどり着く手間を減らすためのものです。具体的には、ダッシュボードとコースページを画面幅に合わせて見やすく表示し、コースページから授業のシラバス・教材のダウンロード・先生へのメッセージにすぐアクセスできるようにします。moodle+R 以外のサイトの表示や動作を変えることはありません（シラバスのサイトは、moodle+R の「シラバス」ボタンから開いたときだけ、該当する授業のページへ移動するために使います）。
+
+【English】
+To make moodle+R (lms.ritsumei.ac.jp), the learning management system of Ritsumeikan University, easier for students to use on a PC. Every feature works within moodle+R to reduce the steps needed to reach course information and materials: it displays the dashboard and course pages in a layout that fits the screen, and lets students reach the course syllabus, bulk download of course materials and messages to their teachers directly from the course page. It does not change any other website (the syllabus site is used only when opened from the "Syllabus" button in moodle+R, to move to that course's syllabus page).

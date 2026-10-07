@@ -1,0 +1,98 @@
+{
+  "manifest_version": 3,
+  "name": "Assist for moodle+R",
+  "version": "0.11.0",
+  "description": "【非公式】立命館大学の moodle+R を PC で使いやすく。時間割と課題を1画面に表示し、授業のシラバスをワンクリックで開き、教材を回ごとにまとめてダウンロードできます。",
+  "homepage_url": "https://github.com/YOUR-GITHUB-NAME/assist-for-moodle-r",
+  "icons": {
+    "128": "128.png"
+  },
+  "permissions": [
+    "storage",
+    "downloads"
+  ],
+  "action": {
+    "default_title": "Assist for moodle+R",
+    "default_icon": {
+      "128": "128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/",
+        "https://lms.ritsumei.ac.jp/index.php"
+      ],
+      "js": [
+        "home-skip.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/my/*",
+        "https://lms.ritsumei.ac.jp/course/view.php*"
+      ],
+      "css": [
+        "layout-toggle.css"
+      ],
+      "js": [
+        "layout-toggle.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/*"
+      ],
+      "js": [
+        "campusweb-link.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/my/*"
+      ],
+      "css": [
+        "dashboard.css"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/my/*"
+      ],
+      "js": [
+        "timetable-courses.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://lms.ritsumei.ac.jp/course/view.php*"
+      ],
+      "css": [
+        "course.css"
+      ],
+      "js": [
+        "course-syllabus.js",
+        "materials-download.js",
+        "course-teachers.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://syllabus.ritsumei.ac.jp/syllabus/s/*"
+      ],
+      "js": [
+        "syllabus-search.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

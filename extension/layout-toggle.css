@@ -1,0 +1,41 @@
+/* ナビバーのレイアウト切り替えボタン（layout-toggle.js が追加） */
+.mx-layout-toggle {
+  display: none;
+  align-self: center;
+  margin-right: .75rem;
+  border: 1px solid #ac413d;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* 2列レイアウトが効くのは 1200px 以上かつ編集モード以外なので、そのときだけ表示 */
+@media (min-width: 1200px) {
+  body:not(.editing) .mx-layout-toggle {
+    display: inline-flex;
+  }
+}
+
+.mx-layout-toggle button {
+  padding: .15rem .6rem;
+  border: 0;
+  background-color: #fff;
+  color: #ac413d;
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.mx-layout-toggle button + button {
+  border-left: 1px solid #ac413d;
+}
+
+.mx-layout-toggle button[aria-pressed="true"] {
+  background-color: #ac413d;
+  color: #fff;
+}
+
+.mx-layout-toggle button:focus-visible {
+  outline: 2px solid #1d2125;
+  outline-offset: -2px;
+}

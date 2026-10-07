@@ -1,0 +1,155 @@
+:root {
+  --accent: #ac413d;
+  --text: #1d2125;
+  --muted: #6a737b;
+  --line: #dee2e6;
+  --bg: #f5f6f7;
+  --card: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e8eaed;
+    --muted: #a7adb3;
+    --line: #3c4043;
+    --bg: #1f2124;
+    --card: #2a2c2f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  line-height: 1.7;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+header img {
+  flex: none;
+  border-radius: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.lead {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+section {
+  margin-bottom: 16px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: .9rem;
+}
+
+p {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+section p {
+  font-size: .95rem;
+}
+
+section p.note {
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 8px 20px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.button:hover,
+.button:focus-visible {
+  filter: brightness(1.1);
+}
+
+.features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features li {
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.features li:first-child {
+  border-top: 0;
+}
+
+.features strong {
+  display: block;
+}
+
+footer {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+footer a,
+section a:not(.button) {
+  color: var(--accent);
+}
+
+@media (max-width: 520px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

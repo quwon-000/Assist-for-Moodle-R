@@ -1,0 +1,19 @@
+# ---- 個人情報を含むため、絶対にリポジトリに入れないもの ----
+# moodle+R を「ウェブページ、完全」で保存したページ（氏名・履修科目などが入っている）
+*moodle+R.html
+*moodle+R_files/
+*moodle+R.htm
+
+# ---- 作り直せるもの ----
+# ストア提出・配布用の zip（GitHub の Releases で自動作成する）
+*.zip
+
+# ---- OS・エディタが作るファイル ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# ---- 手元だけに置く開発メモ（実際の授業コードなどを含む） ----
+private-notes/
