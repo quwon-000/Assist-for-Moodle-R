@@ -2,6 +2,7 @@
 
 立命館大学の LMS「moodle+R」を、パソコンで使いやすくする Chrome / Edge 拡張機能です。
 開いた瞬間に、締め切りの近い課題と今週の時間割が1画面にそろいます。
+
 Chrome ウェブストア: https://chromewebstore.google.com/detail/lgofkcacddfpoepkfiabigmiihmflppn?utm_source=item-share-cb
 
 > **非公式**の拡張機能です。立命館大学とは関係ありません。
