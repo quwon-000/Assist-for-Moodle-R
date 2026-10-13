@@ -1,7 +1,9 @@
 # Assist for moodle+R
 
-立命館大学の LMS「moodle+R」を、パソコンでもっと使いやすくする Chrome / Edge 拡張機能です。
+立命館大学の LMS「moodle+R」を、パソコンで使いやすくする Chrome / Edge 拡張機能です。
 開いた瞬間に、締め切りの近い課題と今週の時間割が1画面にそろいます。
+
+Chrome ウェブストア: https://chromewebstore.google.com/detail/lgofkcacddfpoepkfiabigmiihmflppn?utm_source=item-share-cb
 
 > **非公式**の拡張機能です。立命館大学とは関係ありません。
 
@@ -22,7 +24,7 @@
 
 ## インストール
 
-Chrome ウェブストアで公開した後は、ストアからのインストールをおすすめします（自動で更新されます）。
+インストールは[こちら](https://chromewebstore.google.com/detail/lgofkcacddfpoepkfiabigmiihmflppn?utm_source=item-share-cb)から。
 ここでは、GitHub から入れる方法を説明します。
 
 ### 1. ダウンロードして展開する
@@ -90,22 +92,6 @@ Chrome ウェブストアで公開した後は、ストアからのインスト�
 - 新しいバージョンを公開する前に、[docs/testing.md](docs/testing.md) のチェックリストで実際の moodle+R で確認します。
 - 変更内容は [CHANGELOG.md](CHANGELOG.md) に追記します。
 
-### リリースの手順
-
-1. `extension/manifest.json` の `version` を上げます。
-2. 同じ番号のタグを付けて push します（例: version が `0.11.0` なら `v0.11.0`）。
-
-   ```
-   git tag v0.11.0
-   git push origin v0.11.0
-   ```
-
-3. GitHub Actions が `extension/` の中身を zip にまとめ、Releases に置きます。タグと version が食い違っているとき、`homepage_url` が仮の値のままのときは、zip を作らずに止まります。
-
 ## プライバシー
 
 利用者の情報を外部に送信することはありません。詳しくは [PRIVACY.md](PRIVACY.md) を見てください。
-
-## ライセンス
-
-ライセンスは設定していません。著作権は作者が保持します（コードの閲覧やフォークは、GitHub の利用規約の範囲で可能です）。
