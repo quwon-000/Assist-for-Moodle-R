@@ -79,6 +79,7 @@ flowchart LR
 | 「フォルダ」 | コースページに中身が表示されていればそのリンクを、なければフォルダのページを取得して `mod_folder/content` のリンクを拾う。URL からサブフォルダを読み取る |
 | 説明文・ラベルの添付 | `pluginfile.php` へのリンクを拾う |
 | 「ページ」の添付 | ページを取得して本文の `pluginfile.php` へのリンクを拾う |
+| 「課題」の資料 | 課題のページを取得し、`mod_assign` の `introattachment`（追加ファイル）と `intro`（説明文に貼られたファイル）だけを拾う。同じページに出る提出ファイル（`assignsubmission_*`）とフィードバック（`assignfeedback_*`）は集めない。提出を受け付けている（課題のページに「提出を追加／編集」がある）ときは提出画面（`action=editsubmission`）も取得し、「提出中のみファイルを表示する」設定の追加ファイルと、「活動の指示」に貼られたファイル（`activityattachment`）も拾う。時間制限付き課題のタイマーを始める `begin=1` は付けない |
 | 回ごとのページ | コースページに教材が出ていない回は `course/section.php` を取得し、上と同じように拾う |
 
 - 取得は同じサイト内の `fetch` なので、ログイン状態のまま読めます。同じファイルは `forcedownload` の有無を無視して1回だけ数えます。
@@ -135,6 +136,10 @@ flowchart LR
 | `welcome.html` / `.css` / `.js` | — | インストール時 | 使い始めの案内ページ |
 
 コースページでは、`course-syllabus.js`・`materials-download.js`・`course-teachers.js` の3つが見出しの下のボタン並び（`.mx-course-syllabus`）を共有します。`course-syllabus.js` は storage の読み込みを待つ間に後のスクリプトが並びを作ることがあるため、並びがすでにあればそれを使い、シラバスボタンを先頭に入れます。
+
+## 閲覧の記録について
+
+教材を集めるときに「ページ」「フォルダ」「課題」と課題の提出画面を取得するため、利用者が自分で開いたときと同じイベントが Moodle に記録されます（`course_module_viewed`、提出画面では `submission_form_viewed`）。完了条件が「閲覧」の活動は完了になることがあります。提出の記録は作られず（`get_user_submission($userid, false)`）、提出の状態も変わりません。
 
 ## 既知の制約
 

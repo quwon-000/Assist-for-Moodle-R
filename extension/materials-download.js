@@ -1,5 +1,6 @@
 // コースページの教材を一覧から選んで一括ダウンロードする。
-// 対象: 「ファイル」（mod/resource）、「フォルダ」（mod/folder）の中のファイル、説明文や「ページ」（mod/page）の中の pluginfile.php へのリンク。
+// 対象: 「ファイル」（mod/resource）、「フォルダ」（mod/folder）の中のファイル、説明文や「ページ」（mod/page）の中の pluginfile.php へのリンク、
+//       「課題」（mod/assign）に先生が添付した資料（提出ファイル・フィードバックは除く）。
 // コースページに並ぶ教材に加え、「第1回」などの回ごとのページ（course/section.php）の教材も集める。
 // 保存そのものは background.js が chrome.downloads で行う。
 (() => {
@@ -189,6 +190,52 @@
           }
         } catch (e) {
           // 取得できなかったページは飛ばす
+        }
+      }
+
+      // 「課題」に先生が添付した資料（各課題のページを取得して探す）
+      //   対象は mod_assign の introattachment（追加ファイル）と intro（説明文に貼られたファイル）だけ。
+      //   同じページに出る、自分が提出したファイル（assignsubmission_*）と
+      //   フィードバックのファイル（assignfeedback_*）は資料ではないので集めない
+      for (const activity of root.querySelectorAll('li.activity.modtype_assign')) {
+        const link = activity.querySelector('a.aalink[href*="/mod/assign/view.php"]');
+        if (!link) {
+          continue;
+        }
+        const assignUrl = abs(link, ctx.baseUrl);
+        const assignName = activityNameOf(activity, link);
+        const collectAssignFiles = (main, baseUrl) => {
+          for (const a of main.querySelectorAll('a[href*="/pluginfile.php/"]')) {
+            const url = abs(a, baseUrl);
+            if (!/\/mod_assign\/(introattachment|intro|activityattachment)\//.test(new URL(url).pathname)) {
+              continue;
+            }
+            add({ kind: `課題「${assignName}」の資料`, name: a.textContent.trim() || fileNameOfUrl(url), section: ctx.section(activity), url, at: ctx.at(activity) });
+          }
+        };
+        onStatus(`課題「${assignName}」を調べています…`);
+        try {
+          const doc = await fetchDoc(assignUrl);
+          const main = doc.querySelector('#region-main') || doc.body;
+          collectAssignFiles(main, assignUrl);
+
+          // 提出画面（action=editsubmission）にだけ出る資料もある
+          //   - 「提出中のみファイルを表示する」設定の課題の追加ファイル（introattachment）
+          //   - 「活動の指示」に貼られたファイル（activityattachment）
+          // 提出を受け付けている（課題のページに「提出を追加／編集」がある）ときだけ開く。
+          // 開いても提出の記録は作られず、状態も変わらない（先生のログに「提出フォームを表示」が残る）。
+          // 時間制限付きの課題のタイマーを始める begin=1 は付けない。
+          const canSubmit = main.querySelector('a[href*="action=editsubmission"], input[name="action"][value="editsubmission"]');
+          if (canSubmit) {
+            const editUrl = new URL(assignUrl);
+            editUrl.searchParams.set('action', 'editsubmission');
+            editUrl.searchParams.delete('begin');
+            onStatus(`課題「${assignName}」の提出画面を調べています…`);
+            const editDoc = await fetchDoc(editUrl.href);
+            collectAssignFiles(editDoc.querySelector('#region-main') || editDoc.body, editUrl.href);
+          }
+        } catch (e) {
+          // 取得できなかった課題は飛ばす
         }
       }
     };

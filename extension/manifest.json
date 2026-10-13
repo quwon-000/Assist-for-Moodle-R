@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Assist for moodle+R",
-  "version": "0.11.0",
+  "version": "0.13.0",
   "description": "【非公式】立命館大学の moodle+R を PC で使いやすく。時間割と課題を1画面に表示し、授業のシラバスをワンクリックで開き、教材を回ごとにまとめてダウンロードできます。",
   "homepage_url": "https://github.com/quwon-000/Assist-for-Moodle-R",
   "icons": {
