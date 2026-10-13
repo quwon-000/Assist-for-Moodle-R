@@ -1,7 +1,7 @@
 # 仕組みと設計
 
 Assist for moodle+R がどう動いているかをまとめた資料です。
-使い方は [利用者向けガイド](../extension/README.md)、変更の履歴は [CHANGELOG.md](../CHANGELOG.md) を見てください。
+使い方は [README](../README.md)、変更の履歴は [CHANGELOG.md](../CHANGELOG.md) を見てください。
 
 ## 全体像
 
