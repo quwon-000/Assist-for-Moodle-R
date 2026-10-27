@@ -303,3 +303,152 @@
     line-height: 1.4;
   }
 }
+
+/*
+ * タイムラインの課題を非表示にする（timeline-hide.js）
+ * 「標準 | ワイド」や画面の幅に関係なく使えるので、上のワイド表示の条件の外に書く
+ */
+.block_timeline [data-region="event-list-item"] {
+  position: relative;
+}
+
+.block_timeline .mx-tl-hide {
+  position: absolute;
+  top: .35rem;
+  right: .25rem;
+  padding: .05rem .5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #6a737b;
+  font-size: .75rem;
+  line-height: 1.5;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.block_timeline [data-region="event-list-item"]:hover .mx-tl-hide,
+.block_timeline .mx-tl-hide:focus-visible {
+  opacity: 1;
+}
+
+.block_timeline .mx-tl-hide:hover {
+  border-color: #ac413d;
+  color: #ac413d;
+}
+
+/* 隠した課題。「表示する」を押しているあいだは薄く表示し、「元に戻す」ボタンを常に出す */
+.block_timeline:not(.mx-tl-show-hidden) .mx-tl-hidden {
+  display: none !important;
+}
+
+.block_timeline.mx-tl-show-hidden .mx-tl-hidden {
+  opacity: .5;
+}
+
+.block_timeline.mx-tl-show-hidden .mx-tl-hidden .mx-tl-hide {
+  opacity: 1;
+}
+
+/* 日付の見出しの下の課題がすべて隠れたら、見出しも隠す（判定は timeline-hide.js。:has() は入れ子にできないため） */
+.block_timeline:not(.mx-tl-show-hidden) .mx-tl-date-hidden {
+  display: none;
+}
+
+.block_timeline .mx-tl-bar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .75rem;
+  padding-top: .5rem;
+  border-top: 1px solid #dee2e6;
+  color: #6a737b;
+  font-size: .8rem;
+}
+
+.block_timeline .mx-tl-bar[hidden] {
+  display: none;
+}
+
+.block_timeline .mx-tl-bar-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ac413d;
+  font-size: .8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.block_timeline .mx-tl-bar-restore {
+  padding: .1rem .6rem;
+  border: 1px solid #ac413d;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #ac413d;
+  font-size: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.block_timeline .mx-tl-bar-restore:hover {
+  background-color: #ac413d;
+  color: #fff;
+}
+
+/* 隠す前の確認の画面 */
+.mx-tl-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgb(0 0 0 / .4);
+}
+
+.mx-tl-confirm {
+  width: min(420px, 100%);
+  padding: 1.25rem 1.5rem;
+  border-radius: .5rem;
+  background-color: #fff;
+  color: #1d2125;
+  box-shadow: 0 8px 24px rgb(0 0 0 / .2);
+}
+
+.mx-tl-confirm-message {
+  margin: 0 0 .5rem;
+  font-weight: 700;
+}
+
+.mx-tl-confirm-note {
+  margin: 0 0 1rem;
+  color: #6a737b;
+  font-size: .85rem;
+}
+
+.mx-tl-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+.mx-tl-confirm-actions button {
+  padding: .35rem 1rem;
+  border: 1px solid #ac413d;
+  border-radius: 4px;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mx-tl-confirm-cancel {
+  background-color: #fff;
+  color: #ac413d;
+}
+
+.mx-tl-confirm-ok {
+  background-color: #ac413d;
+  color: #fff;
+}
