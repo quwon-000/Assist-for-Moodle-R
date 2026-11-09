@@ -18,12 +18,11 @@
 
   // 選んだ教材それぞれの保存先フォルダ（「ダウンロード」フォルダからの並び）。
   // make が false ならフォルダを作らない。sectionFolder(回の名前) は回のフォルダの名前（null なら回のフォルダを作らない）
-  //   1件だけ:                     フォルダを作らない          → ダウンロード/<ファイル>
-  //   2件以上・同じ回だけ（回のフォルダを作る）: 科目名は付けない → ダウンロード/<回>/[<フォルダ教材>/]<ファイル>
+  //   すべて同じ回（回のフォルダを作る）: 科目名は付けない → ダウンロード/<回>/[<フォルダ教材>/]<ファイル>
   //   それ以外:                    科目名の下に（回ごとに）    → ダウンロード/<科目>/[<回>/][<フォルダ教材>/]<ファイル>
   const sameSectionOf = (chosen) => new Set(chosen.map((item) => item.section)).size === 1;
   const topKindOf = (chosen, make, sectionFolder) => {
-    if (!make || chosen.length <= 1) {
+    if (!make || chosen.length === 0) {
       return null;
     }
     return sameSectionOf(chosen) && sectionFolder(chosen[0].section) !== null ? 'section' : 'course';
@@ -432,9 +431,7 @@
       sectionBoxes.forEach((b) => { b.nameInput.disabled = !b.checked; });
       if (!kind) {
         folderInput.value = '';
-        folderInput.placeholder = make
-          ? '（1件だけのときはフォルダを作りません）'
-          : '（フォルダを作りません）';
+        folderInput.placeholder = '（フォルダを作りません）';
       } else if (!folderEdited || kind !== lastKind) {
         folderInput.value = defaultFolderOf(kind, chosen);
         folderEdited = false;
@@ -496,7 +493,7 @@
         refresh();
       });
     }
-    // 「すべて選択」「すべて解除」は回の見出しのチェック（回のフォルダ）も一緒に切り替える
+    // 「すべて選択」「すべて解除」は上部の「フォルダ」と回の見出しのチェックも一緒に切り替える
     allBtn.addEventListener('click', () => {
       boxes.forEach((b) => { b.checked = true; });
       setSections(true);
@@ -509,6 +506,10 @@
     noneBtn.addEventListener('click', () => {
       boxes.forEach((b) => { b.checked = false; });
       setSections(false);
+      if (makeBox.checked) {
+        makeBox.checked = false;
+        saveOptions();
+      }
       refresh();
     });
     status.textContent = '';
